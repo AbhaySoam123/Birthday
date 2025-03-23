@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Special One ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #landing {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+        }
+
+        .cake {
+            font-size: 4em;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .question-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .yes-btn {
+            background: #ff4d6d;
+            color: white;
+        }
+
+        .no-btn {
+            background: #ff758f;
+            color: white;
+            position: relative;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes flyAway {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100vw, -100vh) rotate(360deg); }
+        }
+
+        .fly-away {
+            animation: flyAway 2s forwards;
+        }
+
+        #final-message {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .romantic-message {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 120%;
+            animation: floatUp 2s forwards;
+        }
+
+        .message-bubble {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 30px;
+            box-shadow: 0 5px 20px rgba(255,77,109,0.3);
+            display: inline-block;
+            font-size: 1.1rem;
+            transform: rotate(-3deg);
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div id="landing">
+        <div class="cake">🎂</div>
+        <h1>Happy Birthday, Gairik! 🌌</h1>
+        <p>Try clicking "No" if you dare... 😉</p>
+        <button class="btn yes-btn" onclick="startGame()">Begin Our Story</button>
+    </div>
+
+    <div class="container">
+        <div class="question-box" id="q1">
+            <h2>Are you the reason my phone feels magical? 📱✨</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showMessage('Your texts turn days into sparkly confetti! 🎉')">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div class="question-box" id="q2">
+            <h2>Did you steal the stars to put in your eyes? 🌟👀</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showMessage('That’s why I get lost in them... 🌌')">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div class="question-box" id="q3">
+            <h2>Do I remember every 'small' thing you’ve shared? 🔐❤️</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showMessage('Your stories are my favorite fairy tales 📖')">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div class="question-box" id="q4">
+            <h2>Are you my favorite 'what if?' 🌠</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showMessage('Our best chapters are unwritten... 📝')">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div class="question-box" id="q5">
+            <h2>Did you teach my heart new colors? 🎨</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showMessage('Love never felt this golden... 🌅')">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div class="question-box" id="q6">
+            <h2>Are you the exception to all my rules? 📜</h2>
+            <div class="options">
+                <button class="btn yes-btn" onclick="showFinalMessage()">Yes</button>
+                <button class="btn no-btn" onmouseover="floatAway(this)">No</button>
+            </div>
+        </div>
+
+        <div id="final-message">
+            <h2>To My Forever Paradox ✨</h2>
+            <p>Happy Birthday to the man who transforms every mundane moment into pure magic.<br>
+                Thank you for being both my sanctuary in life’s storm and my exhilarating, tender paradox.<br>
+                This year, let’s create a love story woven with vibrant contrasts and gentle surprises.<br>
+                Once Again, Happy Birthday My Love 🌹</p>
+            <button class="btn yes-btn" onclick="showFireworks()">Our Forever Starts Here 🫶</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles', {
+            particles: {
+                number: { value: 50 },
+                color: { value: '#ff4d6d' },
+                shape: { type: 'heart' },
+                size: { value: 10 },
+                move: { speed: 2, random: true }
+            }
+        });
+
+        function startGame() {
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('q1').style.display = 'block';
+            createHearts();
+        }
+
+        function floatAway(button) {
+            button.classList.add('fly-away');
+            setTimeout(() => button.style.display = 'none', 2000);
+        }
+
+        function showMessage(text) {
+            const currentQuestion = event.target.closest('.question-box');
+            const messageBox = document.createElement('div');
+            messageBox.className = 'romantic-message';
+            messageBox.innerHTML = `<div class="message-bubble">💌<p>${text}</p></div>`;
+            currentQuestion.appendChild(messageBox);
+            
+            setTimeout(() => {
+                const nextId = currentQuestion.id.replace('q', '') * 1 + 1;
+                document.querySelectorAll('.question-box').forEach(q => q.style.display = 'none');
+                document.getElementById(`q${nextId}`).style.display = 'block';
+                messageBox.remove();
+                createHearts();
+            }, 2500);
+        }
+
+        function showFinalMessage() {
+            document.querySelectorAll('.question-box').forEach(q => q.style.display = 'none');
+            document.getElementById('final-message').style.display = 'block';
+            createHearts();
+        }
+
+        function createHearts() {
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animation = `float ${2 + Math.random() * 3}s infinite`;
+                heart.innerHTML = '💖';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }
+        }
+
+        function showFireworks() {
+            alert("🎉 Your real gift awaits... Check your messages, my love! 💌");
+        }
+    </script>
+</body>
+</html>
