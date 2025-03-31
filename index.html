@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Background patterns */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background-color: transparent;
+            background-image: radial-gradient(#ff6b8b 2px, transparent 2px);
+            background-size: 40px 40px;
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 107, 139, 0.2);
+            font-size: 20px;
+            animation: float-up 20s linear infinite;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .page {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .visible {
+            opacity: 1;
+            z-index: 10;
+        }
+        
+        /* Welcome Page */
+        #welcome-page {
+            background: linear-gradient(135deg, #ff6b8b, #7366ff);
+            color: white;
+        }
+        
+        .welcome-container {
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .heart-btn {
+            background-color: white;
+            color: #ff6b8b;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .heart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .heart-btn::after {
+            content: "♥";
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .heart-btn:hover::after {
+            opacity: 1;
+            left: 25px;
+        }
+        
+        /* Memory Page */
+        #memory-page {
+            background: linear-gradient(135deg, #7366ff, #3b5998);
+            color: white;
+        }
+        
+        .memory-container {
+            max-width: 700px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .memory-card {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fade-in 0.5s forwards;
+            animation-delay: calc(var(--i) * 0.2s);
+        }
+        
+        @keyframes fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .memory-title {
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .memory-text {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        
+        .navigation-btn {
+            background-color: white;
+            color: #7366ff;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .navigation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Questions Page */
+        #questions-page {
+            background: linear-gradient(135deg, #3b5998, #00ccff);
+            color: white;
+        }
+        
+        .questions-container {
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-box {
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .question-hint {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            position: relative;
+        }
+        
+        .option-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .yes-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .no-btn {
+            background-color: #e74c3c;
+            color: white;
+            position: relative;
+        }
+        
+        .yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .no-btn.floating {
+            position: absolute;
+            z-index: 1000;
+            transition: all 0.2s ease-out;
+        }
+        
+        /* Final Page */
+        #final-page {
+            background: linear-gradient(135deg, #00ccff, #ff6b8b);
+            color: white;
+        }
+        
+        .final-container {
+            max-width: 700px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .final-message {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .heart-animation {
+            font-size: 5rem;
+            color: #ffffff;
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            margin: 20px 0;
+        }
+        
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.2);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.3);
+            }
+            60% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        #restart-btn {
+            margin-top: 30px;
+        }
+        
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            opacity: 0;
+            top: 0;
+            animation: confetti-fall 3s ease-in-out forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                top: -10px;
+                transform: rotateZ(0deg);
+            }
+            100% {
+                opacity: 0;
+                top: 100vh;
+                transform: rotateZ(720deg);
+            }
+        }
+        
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-dot.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="bg-hearts"></div>
+    <div class="floating-hearts" id="floating-hearts"></div>
+    
+    <!-- Welcome Page -->
+    <div id="welcome-page" class="page visible">
+        <div class="welcome-container">
+            <h1>Happy Birthday! 🎂</h1>
+            <p class="welcome-text">
+                Hey there! I've created this special place just for you on your birthday. 
+                I wanted to make something unique to celebrate you and share some thoughts 
+                that I've been keeping in my heart.
+            </p>
+            <p class="welcome-text">
+                Let's take a little journey together through some memories and thoughts. 
+                Are you ready?
+            </p>
+            <button id="start-journey-btn" class="heart-btn">Begin Journey</button>
+        </div>
+    </div>
+    
+    <!-- Memory Page -->
+    <div id="memory-page" class="page hidden">
+        <div class="memory-container">
+            <h1>Our Memories</h1>
+            <p class="welcome-text">
+                These are some moments I cherish with you. Each one holds a special place in my heart.
+            </p>
+            
+            <div class="memory-card" style="--i: 1">
+                <div class="memory-title">First Time We Met</div>
+                <p class="memory-text">
+                    Remember when we first met? I was instantly charmed by the way you spoke with so much passion. That first playful kiss on my cheek made me feel like you had started something special, and I just had to kiss you back. It remains such a sweet, lighthearted memory.
+                    That day changed something in me, though I could not quite explain it at the time.
+                </p>
+            </div>
+            
+            <div class="memory-card" style="--i: 2">
+                <div class="memory-title">Late Night Conversations</div>
+                <p class="memory-text">
+                    Those nights when we talked for hours, losing track of time. We shared everything in between. 
+                    I have never felt so connected to someone before.
+                </p>
+            </div>
+            
+            <div class="memory-card" style="--i: 3">
+                <div class="memory-title">That Moment</div>
+                <p class="memory-text">
+                    When you confessed your feelings to me. I will never forget those text, the sincerity in your messages. 
+                    Even though we couldn't be together for many reasons, that moment is forever etched in my heart.
+                </p>
+            </div>
+            
+            <button id="to-questions-btn" class="navigation-btn">Continue</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+        </div>
+    </div>
+    
+    <!-- Questions Page -->
+    <div id="questions-page" class="page hidden">
+        <div class="questions-container">
+            <h1>Just Between Us</h1>
+            <p class="welcome-text">
+                I have a few questions for you, if you don't mind. Be honest with your answers!
+            </p>
+            
+            <div id="question-box" class="question-box">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+            
+            <!-- Only shown after all questions -->
+            <button id="to-final-btn" class="navigation-btn hidden">See Your Message</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-dot"></div>
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+        </div>
+    </div>
+    
+    <!-- Final Page -->
+    <div id="final-page" class="page hidden">
+        <div class="final-container">
+            <h1>Happy Birthday!</h1>
+            
+            <div class="heart-animation">♥</div>
+            
+            <p class="final-message">
+                Thank you for taking this little journey with me. On your special day, I wanted to let you know that 
+                you still hold a special place in my heart. Even though we couldn't be together due to circumstances, 
+                the memories we shared and the connection we had remains precious to me.
+            </p>
+            
+            <p class="final-message">
+                I hope your day is filled with as much joy as you have brought into other's life. May this new year of your life 
+                bring you happiness, success, and everything you wish for.
+            </p>
+            
+            <p class="final-message">
+                With all my love and affection,<br>
+                <strong>♥ Your Secret Admirer ♥</strong>
+            </p>
+            
+            <button id="restart-btn" class="heart-btn">Start Again</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot active"></div>
+        </div>
+    </div>
+
+    <script>
+        // Questions array
+        const questions = [
+            {
+                text: "Do you remember the little moments we shared together?",
+                hint: "Try clicking 'No' (but you can't escape the truth!) 😉"
+            },
+        
+            {
+                text: "Did those conversations we had mean something to you too?",
+                hint: ""
+            },
+            {
+                text: "Do you sometimes think about me?",
+                hint: ""
+            },
+            {
+                text: "Do you still love me?",
+                hint: ""
+            }
+        ];
+        
+        let currentQuestionIndex = 0;
+        let answeredQuestions = 0;
+        let floatingNoButtons = [];
+        
+        // Create floating hearts background
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts');
+            const heartCount = 15;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '♥';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heart.style.opacity = `${Math.random() * 0.3 + 0.1}`;
+                heart.style.animationDuration = `${Math.random() * 15 + 15}s`;
+                heart.style.animationDelay = `${Math.random() * 10}s`;
+                
+                container.appendChild(heart);
+            }
+        }
+        
+        // Call on page load
+        createFloatingHearts();
+        
+        // Navigation Functions
+        function navigateToPage(fromPageId, toPageId) {
+            document.getElementById(fromPageId).classList.remove('visible');
+            document.getElementById(fromPageId).classList.add('hidden');
+            
+            setTimeout(() => {
+                document.getElementById(toPageId).classList.remove('hidden');
+                document.getElementById(toPageId).classList.add('visible');
+                
+                // Update progress dots
+                updateProgressDots(toPageId);
+                
+                // If navigating to questions page, show first question
+                if (toPageId === 'questions-page') {
+                    showCurrentQuestion();
+                }
+                
+                // Create confetti effect when reaching final page
+                if (toPageId === 'final-page') {
+                    createConfetti();
+                }
+                
+                // Clear any floating no buttons when changing pages
+                clearFloatingButtons();
+            }, 500);
+        }
+        
+        function updateProgressDots(currentPageId) {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            if (currentPageId === 'memory-page') {
+                dots[0].classList.add('active');
+            } else if (currentPageId === 'questions-page') {
+                dots[1].classList.add('active');
+            } else if (currentPageId === 'final-page') {
+                dots[2].classList.add('active');
+            }
+        }
+        
+        // Welcome Page Button
+        document.getElementById('start-journey-btn').addEventListener('click', function() {
+            navigateToPage('welcome-page', 'memory-page');
+        });
+        
+        // Memory Page Button
+        document.getElementById('to-questions-btn').addEventListener('click', function() {
+            navigateToPage('memory-page', 'questions-page');
+        });
+        
+        // Final Page Button (Restart)
+        document.getElementById('restart-btn').addEventListener('click', function() {
+            // Reset questions
+            currentQuestionIndex = 0;
+            answeredQuestions = 0;
+            navigateToPage('final-page', 'welcome-page');
+        });
+        
+        // Clear floating buttons
+        function clearFloatingButtons() {
+            floatingNoButtons.forEach(btn => {
+                if (btn && btn.parentNode) {
+                    btn.parentNode.removeChild(btn);
+                }
+            });
+            floatingNoButtons = [];
+        }
+        
+        // Questions Functionality
+        function showCurrentQuestion() {
+            const questionBox = document.getElementById('question-box');
+            
+            if (currentQuestionIndex < questions.length) {
+                const question = questions[currentQuestionIndex];
+                
+                questionBox.innerHTML = `
+                    <div class="question-text">${question.text}</div>
+                    ${question.hint ? `<div class="question-hint">${question.hint}</div>` : ''}
+                    <div class="options-container">
+                        <button class="option-btn yes-btn">Yes</button>
+                        <button class="option-btn no-btn">No</button>
+                    </div>
+                `;
+                
+                // Add event listeners
+                const yesBtn = questionBox.querySelector('.yes-btn');
+                const noBtn = questionBox.querySelector('.no-btn');
+                
+                yesBtn.addEventListener('click', handleYesClick);
+                noBtn.addEventListener('click', handleNoClick);
+            } else {
+                // All questions answered, show continue button
+                questionBox.innerHTML = `
+                    <div class="question-text">Thank you for your honesty! ❤️</div>
+                `;
+                document.getElementById('to-final-btn').classList.remove('hidden');
+                
+                // Add event listener to final button
+                document.getElementById('to-final-btn').addEventListener('click', function() {
+                    navigateToPage('questions-page', 'final-page');
+                });
+            }
+        }
+        
+        function handleYesClick() {
+            // Create mini-confetti effect
+            createMiniConfetti();
+            
+            // Move to next question
+            currentQuestionIndex++;
+            answeredQuestions++;
+            showCurrentQuestion();
+        }
+        
+        function handleNoClick(event) {
+            // Create floating button effect
+            const noBtn = event.target;
+            const originalRect = noBtn.getBoundingClientRect();
+            
+            // Create a clone of the button that will float
+            const floatingNoBtn = document.createElement('button');
+            floatingNoBtn.className = 'option-btn no-btn floating';
+            floatingNoBtn.textContent = 'No';
+            floatingNoBtn.style.position = 'fixed';
+            floatingNoBtn.style.left = `${originalRect.left}px`;
+            floatingNoBtn.style.top = `${originalRect.top}px`;
+            floatingNoBtn.style.width = `${originalRect.width}px`;
+            floatingNoBtn.style.height = `${originalRect.height}px`;
+            
+            document.body.appendChild(floatingNoBtn);
+            floatingNoButtons.push(floatingNoBtn);
+            
+            // Add the floating effect
+            moveButton(floatingNoBtn);
+            
+            // Add event listener to the floating button
+            floatingNoBtn.addEventListener('mouseover', function() {
+                moveButton(floatingNoBtn);
+            });
+            
+            floatingNoBtn.addEventListener('click', function() {
+                moveButton(floatingNoBtn);
+            });
+        }
+        
+        function moveButton(button) {
+            // Get viewport dimensions
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            
+            // Get random position within viewport
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // Animate button to new position
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+        }
+        
+        // Confetti Effect
+        function createConfetti() {
+            const colors = ['#ff6b8b', '#7366ff', '#00ccff', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 15 + 5 + 'px';
+                confetti.style.height = Math.random() * 15 + 5 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                
+                // Set animation delay
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation ends
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000);
+            }
+        }
+        
+        function createMiniConfetti() {
+            const colors = ['#ff6b8b', '#7366ff', '#00ccff', '#2ecc71', '#e74c3c', '#f1c40f', '#9b59b6'];
+            
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = 40 + Math.random() * 20 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 8 + 3 + 'px';
+                confetti.style.height = Math.random() * 8 + 3 + 'px';
+                
+                // Set animation delay
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation ends
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
